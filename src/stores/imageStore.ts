@@ -9,7 +9,8 @@ export const useImageStore = defineStore('imageStore', () => {
   const fetchImages = async () => {
     isLoading.value = true
     try {
-      const response = await fetch('https://picsum.photos/v2/list?limit=100')
+      const endpoint = `${import.meta.env.VITE_API_ENDPOINT}?limit=100`
+      const response = await fetch(endpoint)
       images.value = await response.json()
     } catch (error) {
       console.error('Error fetching images:', error)

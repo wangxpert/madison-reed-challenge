@@ -1,20 +1,35 @@
-# image-gallery
+# Image Gallery
 
-This template should help get you started developing with Vue 3 in Vite.
+A responsive image gallery application built with modern web technologies. This app fetches images from an API and displays them in a grid layout. Users can click on an image to view it in a modal with navigation options to browse through the images.
 
-## Recommended IDE Setup
+## Features
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+- Responsive grid layout for images.
+- Modal view with "Next" and "Previous" navigation.
+- Smooth animations for transitions.
+- Loading indicators for better user experience.
 
-## Type Support for `.vue` Imports in TS
+## Technologies Used
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+- **Vue 3**: A progressive JavaScript framework for building user interfaces.
+- **TypeScript**: For type-safe development.
+- **Pinia**: A state management library for Vue.
+- **Tailwind CSS**: A utility-first CSS framework for styling.
+- **Vite**: A fast build tool for modern web projects.
 
-## Customize configuration
+## Environment Variables
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+This app uses an API endpoint to fetch images. To configure the API endpoint, create a `.env` file from `.env.example` file in the root of the project and add the following:
+
+```env
+VITE_API_ENDPOINT=<image api endpoint>
+```
+
+Make sure to replace the value of `VITE_API_ENDPOINT` with your desired API endpoint if needed.
 
 ## Project Setup
+
+### Install Dependencies
 
 ```sh
 npm install
@@ -43,3 +58,15 @@ npm run test:unit
 ```sh
 npm run lint
 ```
+
+## Recommended IDE Setup
+
+[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+
+## Customize Configuration
+
+See [Vite Configuration Reference](https://vite.dev/config/).
+
+## License
+
+This project is licensed under the MIT License.
