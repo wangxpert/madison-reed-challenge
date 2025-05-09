@@ -21,14 +21,6 @@ describe('ImageModal.vue', () => {
     },
   ]
 
-  const selectedImage = {
-    id: '1',
-    download_url: 'https://example.com/image1.jpg',
-    author: 'Author 1',
-    width: 800,
-    height: 600,
-  }
-
   let createPinia: TestingPinia
   let globalConfig: {
     global: {
@@ -59,15 +51,14 @@ describe('ImageModal.vue', () => {
     const wrapper = mount(ImageModal, {
       ...globalConfig,
       props: {
-        selectedImage,
         closeModal: vi.fn(),
         currentIndex: 0,
         setCurrentIndex: vi.fn(),
       },
     })
 
-    expect(wrapper.find('img').attributes('src')).toBe(selectedImage.download_url)
-    expect(wrapper.find('h2').text()).toBe(selectedImage.author)
+    expect(wrapper.find('img').attributes('src')).toBe(images[0].download_url)
+    expect(wrapper.find('h2').text()).toBe(images[0].author)
   })
 
   it('calls closeModal when the modal background is clicked', async () => {
@@ -75,7 +66,6 @@ describe('ImageModal.vue', () => {
     const wrapper = mount(ImageModal, {
       ...globalConfig,
       props: {
-        selectedImage,
         closeModal,
         currentIndex: 0,
         setCurrentIndex: vi.fn(),
@@ -91,7 +81,6 @@ describe('ImageModal.vue', () => {
     const wrapper = mount(ImageModal, {
       ...globalConfig,
       props: {
-        selectedImage,
         closeModal: vi.fn(),
         currentIndex: 0,
         setCurrentIndex,
@@ -109,7 +98,6 @@ describe('ImageModal.vue', () => {
     const wrapper = mount(ImageModal, {
       ...globalConfig,
       props: {
-        selectedImage,
         closeModal: vi.fn(),
         currentIndex: images.length - 1, // Last image
         setCurrentIndex: vi.fn(),
@@ -125,7 +113,6 @@ describe('ImageModal.vue', () => {
     const wrapper = mount(ImageModal, {
       ...globalConfig,
       props: {
-        selectedImage,
         closeModal: vi.fn(),
         currentIndex: 1, // Second image
         setCurrentIndex,
@@ -143,7 +130,6 @@ describe('ImageModal.vue', () => {
     const wrapper = mount(ImageModal, {
       ...globalConfig,
       props: {
-        selectedImage,
         closeModal: vi.fn(),
         currentIndex: 0, // First image
         setCurrentIndex: vi.fn(),

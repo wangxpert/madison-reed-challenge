@@ -1,16 +1,21 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import LoadingIndicator from './LoadingIndicator.vue'
-import { useImageStore } from '../stores/imageStore' // Import the image store
+import { useImageStore } from '../stores/imageStore'
 
-// Access the image store
+// Define the emit type
+defineEmits<{
+  (e: 'openModal', payload: number): void
+}>()
+
 const imageStore = useImageStore()
+const images = computed(() => imageStore.images)
 
 // Track loading states for each image
 const loadedImages = ref(new Set())
 
 // Function to mark an image as loaded
-const markAsLoaded = (id) => {
+const markAsLoaded = (id: string) => {
   loadedImages.value.add(id)
 }
 </script>
@@ -18,10 +23,7 @@ const markAsLoaded = (id) => {
 <template>
   <div class="p-6">
     <!-- Check if there are images -->
-    <div
-      v-if="imageStore.images.length === 0"
-      class="text-center text-gray-500 text-lg font-medium"
-    >
+    <div v-if="images.length === 0" class="text-center text-gray-500 text-lg font-medium">
       No Images Available
     </div>
 
@@ -31,10 +33,10 @@ const markAsLoaded = (id) => {
       class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"
     >
       <div
-        v-for="(image, index) in imageStore.images"
+        v-for="(image, index) in images"
         :key="image.id"
         class="relative cursor-pointer group overflow-hidden rounded-lg"
-        @click="$emit('openModal', image, index)"
+        @click="$emit('openModal', index)"
       >
         <!-- Loading Indicator -->
         <div

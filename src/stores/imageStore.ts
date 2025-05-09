@@ -1,8 +1,9 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import type { Image } from '../types/image'
 
 export const useImageStore = defineStore('imageStore', () => {
-  const images = ref([])
+  const images = ref<Image[]>([])
   const isLoading = ref(false)
 
   // Fetch images from the API

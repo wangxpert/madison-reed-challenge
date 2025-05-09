@@ -1,33 +1,37 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useImageStore } from '../stores/imageStore' // Import the image store
+import { useImageStore } from '../stores/imageStore'
 
-// Props for modal control
-const { selectedImage, closeModal, currentIndex, setCurrentIndex } = defineProps({
-  selectedImage: Object,
-  closeModal: Function,
-  currentIndex: Number, // Index of the currently selected image
-  setCurrentIndex: Function, // Function to update the current index
+interface ImageModalProps {
+  closeModal: () => void // Function to close the modal
+  currentIndex?: number // Index of the currently selected image
+  setCurrentIndex: (index: number) => void // Function to update the current index
+}
+const { closeModal, currentIndex, setCurrentIndex } = defineProps<ImageModalProps>()
+
+const imageStore = useImageStore()
+const images = computed(() => imageStore.images)
+
+// Compute the selected image based on the current index
+const selectedImage = computed(() => {
+  if (currentIndex !== null && currentIndex >= 0 && currentIndex < images.value.length) {
+    return images.value[currentIndex]
+  }
+  return null
 })
 
-// Access images from the store
-const imageStore = useImageStore()
-const images = computed(() => imageStore.images) // Get images from the store
-
 // Computed property to check if there is a previous or next image
-const hasPrev = computed(() => currentIndex > 0)
-const hasNext = computed(() => currentIndex < images.value.length - 1)
+const hasPrev = computed(() => currentIndex !== null && currentIndex > 0)
+const hasNext = computed(() => currentIndex !== null && currentIndex < images.value.length - 1)
 
-// Function to navigate to the previous image
 const goToPrev = () => {
-  if (hasPrev.value) {
+  if (hasPrev.value && currentIndex !== null) {
     setCurrentIndex(currentIndex - 1)
   }
 }
 
-// Function to navigate to the next image
 const goToNext = () => {
-  if (hasNext.value) {
+  if (hasNext.value && currentIndex !== null) {
     setCurrentIndex(currentIndex + 1)
   }
 }
@@ -43,7 +47,6 @@ const transitionKey = computed(() => `image-${currentIndex}`)
     @click="closeModal"
   >
     <div class="bg-white p-8 rounded-lg shadow-lg max-w-3xl w-full relative" @click.stop>
-      <!-- Close Button -->
       <button
         class="absolute -top-4 -right-4 bg-gray-100 text-gray-500 hover:text-gray-800 hover:bg-gray-200 rounded-full w-10 h-10 flex items-center justify-center shadow-md"
         @click="closeModal"
@@ -71,7 +74,6 @@ const transitionKey = computed(() => `image-${currentIndex}`)
 
       <!-- Navigation Buttons -->
       <div class="flex justify-between mt-6">
-        <!-- Previous Button -->
         <button
           v-if="hasPrev"
           data-testid="prev-button"
@@ -80,8 +82,6 @@ const transitionKey = computed(() => `image-${currentIndex}`)
         >
           Previous
         </button>
-
-        <!-- Next Button -->
         <button
           v-if="hasNext"
           data-testid="next-button"
