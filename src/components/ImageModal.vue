@@ -74,6 +74,7 @@ const transitionKey = computed(() => `image-${currentIndex}`)
         <!-- Previous Button -->
         <button
           v-if="hasPrev"
+          data-testid="prev-button"
           class="bg-gray-100 text-gray-500 hover:text-gray-800 hover:bg-gray-200 rounded-lg px-6 py-3 shadow-md"
           @click="goToPrev"
         >
@@ -83,6 +84,7 @@ const transitionKey = computed(() => `image-${currentIndex}`)
         <!-- Next Button -->
         <button
           v-if="hasNext"
+          data-testid="next-button"
           class="bg-gray-100 text-gray-500 hover:text-gray-800 hover:bg-gray-200 rounded-lg px-6 py-3 shadow-md ml-auto"
           @click="goToNext"
         >

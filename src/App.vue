@@ -47,11 +47,7 @@ const setCurrentIndex = (index) => {
     </div>
 
     <!-- Gallery -->
-    <ImageGallery
-      v-else
-      :images="imageStore.images"
-      :openModal="(image, index) => openModal(image, index)"
-    />
+    <ImageGallery v-else @openModal="openModal" />
 
     <!-- Modal -->
     <ImageModal
