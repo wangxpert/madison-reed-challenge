@@ -3,8 +3,8 @@ import { defineProps, ref } from 'vue'
 import LoadingIndicator from './LoadingIndicator.vue'
 
 defineProps({
-  images: Array,
-  openModal: Function,
+  images: Array, // List of images
+  openModal: Function, // Function to open the modal
 })
 
 // Track loading states for each image
@@ -21,15 +21,15 @@ const markAsLoaded = (id) => {
     class="p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"
   >
     <div
-      v-for="image in images"
+      v-for="(image, index) in images"
       :key="image.id"
-      class="relative cursor-pointer"
-      @click="openModal(image)"
+      class="relative cursor-pointer group overflow-hidden rounded-lg"
+      @click="openModal(image, index)"
     >
       <!-- Loading Indicator -->
       <div
         v-if="!loadedImages.has(image.id)"
-        class="absolute inset-0 flex items-center justify-center bg-gray-200 rounded-lg"
+        class="absolute inset-0 flex items-center justify-center bg-gray-200"
       >
         <LoadingIndicator />
       </div>
@@ -38,9 +38,16 @@ const markAsLoaded = (id) => {
       <img
         :src="image.download_url"
         :alt="image.author"
-        class="w-full aspect-square object-cover rounded-lg shadow-md"
+        class="w-full aspect-square object-cover transition-transform duration-300 group-hover:scale-105"
         @load="markAsLoaded(image.id)"
       />
+
+      <!-- Hover Overlay -->
+      <div
+        class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity duration-200"
+      >
+        <p class="text-white text-sm font-medium">{{ image.author }}</p>
+      </div>
     </div>
   </div>
 </template>

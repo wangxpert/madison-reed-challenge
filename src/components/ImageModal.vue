@@ -1,10 +1,36 @@
 <script setup lang="ts">
-import { defineProps } from 'vue'
+import { computed } from 'vue'
+import { useImageStore } from '../stores/imageStore' // Import the image store
 
-defineProps({
+// Props for modal control
+const { selectedImage, closeModal, currentIndex, setCurrentIndex } = defineProps({
   selectedImage: Object,
   closeModal: Function,
+  currentIndex: Number, // Index of the currently selected image
+  setCurrentIndex: Function, // Function to update the current index
 })
+
+// Access images from the store
+const imageStore = useImageStore()
+const images = computed(() => imageStore.images) // Get images from the store
+
+// Computed property to check if there is a previous or next image
+const hasPrev = computed(() => currentIndex > 0)
+const hasNext = computed(() => currentIndex < images.value.length - 1)
+
+// Function to navigate to the previous image
+const goToPrev = () => {
+  if (hasPrev.value) {
+    setCurrentIndex(currentIndex - 1)
+  }
+}
+
+// Function to navigate to the next image
+const goToNext = () => {
+  if (hasNext.value) {
+    setCurrentIndex(currentIndex + 1)
+  }
+}
 </script>
 
 <template>
@@ -35,6 +61,24 @@ defineProps({
       <p class="text-gray-600">
         Original Size: {{ selectedImage.width }} x {{ selectedImage.height }}
       </p>
+
+      <!-- Navigation Buttons -->
+      <div class="flex justify-between mt-4">
+        <button
+          v-if="hasPrev"
+          class="bg-gray-100 text-gray-500 hover:text-gray-800 hover:bg-gray-200 rounded-lg px-4 py-2 shadow-md"
+          @click="goToPrev"
+        >
+          Previous
+        </button>
+        <button
+          v-if="hasNext"
+          class="bg-gray-100 text-gray-500 hover:text-gray-800 hover:bg-gray-200 rounded-lg px-4 py-2 shadow-md"
+          @click="goToNext"
+        >
+          Next
+        </button>
+      </div>
     </div>
   </div>
 </template>
