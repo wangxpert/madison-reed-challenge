@@ -17,7 +17,9 @@ const markAsLoaded = (id) => {
 </script>
 
 <template>
-  <div class="p-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+  <div
+    class="p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"
+  >
     <div
       v-for="image in images"
       :key="image.id"
@@ -36,7 +38,7 @@ const markAsLoaded = (id) => {
       <img
         :src="image.download_url"
         :alt="image.author"
-        class="w-full h-32 object-cover rounded-lg shadow-md"
+        class="w-full aspect-square object-cover rounded-lg shadow-md"
         @load="markAsLoaded(image.id)"
       />
     </div>

@@ -31,7 +31,10 @@ defineProps({
 
       <!-- Image Details -->
       <h2 class="text-lg font-bold mb-2">{{ selectedImage.author }}</h2>
-      <p class="text-gray-600">ID: {{ selectedImage.id }}</p>
+      <p class="text-gray-600 mb-2">ID: {{ selectedImage.id }}</p>
+      <p class="text-gray-600">
+        Original Size: {{ selectedImage.width }} x {{ selectedImage.height }}
+      </p>
     </div>
   </div>
 </template>
