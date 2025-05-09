@@ -1,29 +1,19 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
+import { useImageStore } from './stores/imageStore'
 import ImageGallery from './components/ImageGallery.vue'
 import ImageModal from './components/ImageModal.vue'
 import LoadingIndicator from './components/LoadingIndicator.vue'
 
-// State variables
-const images = ref([])
-const isLoading = ref(true)
-const selectedImage = ref(null)
+// Use the image store
+const imageStore = useImageStore()
 
-// Fetch images from the API
-const fetchImages = async () => {
-  try {
-    const response = await fetch('https://picsum.photos/v2/list?limit=100')
-    images.value = await response.json()
-  } catch (error) {
-    console.error('Error fetching images:', error)
-  } finally {
-    isLoading.value = false
-  }
-}
+// State for the selected image
+const selectedImage = ref(null)
 
 // Lifecycle hook to fetch images on mount
 onMounted(() => {
-  fetchImages()
+  imageStore.fetchImages()
 })
 
 // Function to open the modal
@@ -40,12 +30,15 @@ const closeModal = () => {
 <template>
   <div>
     <!-- Loading Indicator -->
-    <div v-if="isLoading" class="fixed inset-0 flex items-center justify-center bg-gray-100 z-50">
+    <div
+      v-if="imageStore.isLoading"
+      class="fixed inset-0 flex items-center justify-center bg-gray-100 z-50"
+    >
       <LoadingIndicator size="lg" />
     </div>
 
     <!-- Gallery -->
-    <ImageGallery v-else :images="images" :openModal="openModal" />
+    <ImageGallery v-else :images="imageStore.images" :openModal="openModal" />
 
     <!-- Modal -->
     <ImageModal :selectedImage="selectedImage" :closeModal="closeModal" />
