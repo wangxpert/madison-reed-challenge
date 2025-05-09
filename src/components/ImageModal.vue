@@ -31,6 +31,9 @@ const goToNext = () => {
     setCurrentIndex(currentIndex + 1)
   }
 }
+
+// Ref to track the key for the transition
+const transitionKey = computed(() => `image-${currentIndex}`)
 </script>
 
 <template>
@@ -39,7 +42,7 @@ const goToNext = () => {
     class="fixed inset-0 bg-black/30 flex items-center justify-center z-50"
     @click="closeModal"
   >
-    <div class="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full relative" @click.stop>
+    <div class="bg-white p-8 rounded-lg shadow-lg max-w-3xl w-full relative" @click.stop>
       <!-- Close Button -->
       <button
         class="absolute -top-4 -right-4 bg-gray-100 text-gray-500 hover:text-gray-800 hover:bg-gray-200 rounded-full w-10 h-10 flex items-center justify-center shadow-md"
@@ -48,32 +51,39 @@ const goToNext = () => {
         &times;
       </button>
 
-      <!-- Image -->
-      <img
-        :src="selectedImage.download_url"
-        :alt="selectedImage.author"
-        class="w-full h-auto rounded-lg mb-4"
-      />
+      <!-- Image with Transition -->
+      <transition :name="'fade'" mode="out-in">
+        <img
+          v-if="selectedImage"
+          :key="transitionKey"
+          :src="selectedImage.download_url"
+          :alt="selectedImage.author"
+          class="w-full h-auto rounded-lg mb-6"
+        />
+      </transition>
 
       <!-- Image Details -->
-      <h2 class="text-lg font-bold mb-2">{{ selectedImage.author }}</h2>
+      <h2 class="text-xl font-bold mb-4">{{ selectedImage.author }}</h2>
       <p class="text-gray-600 mb-2">ID: {{ selectedImage.id }}</p>
       <p class="text-gray-600">
         Original Size: {{ selectedImage.width }} x {{ selectedImage.height }}
       </p>
 
       <!-- Navigation Buttons -->
-      <div class="flex justify-between mt-4">
+      <div class="flex justify-between mt-6">
+        <!-- Previous Button -->
         <button
           v-if="hasPrev"
-          class="bg-gray-100 text-gray-500 hover:text-gray-800 hover:bg-gray-200 rounded-lg px-4 py-2 shadow-md"
+          class="bg-gray-100 text-gray-500 hover:text-gray-800 hover:bg-gray-200 rounded-lg px-6 py-3 shadow-md"
           @click="goToPrev"
         >
           Previous
         </button>
+
+        <!-- Next Button -->
         <button
           v-if="hasNext"
-          class="bg-gray-100 text-gray-500 hover:text-gray-800 hover:bg-gray-200 rounded-lg px-4 py-2 shadow-md"
+          class="bg-gray-100 text-gray-500 hover:text-gray-800 hover:bg-gray-200 rounded-lg px-6 py-3 shadow-md ml-auto"
           @click="goToNext"
         >
           Next
@@ -82,3 +92,15 @@ const goToNext = () => {
     </div>
   </div>
 </template>
+
+<style scoped>
+/* Fade animation */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>
